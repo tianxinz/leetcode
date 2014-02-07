@@ -1,0 +1,67 @@
+/*
+Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right which minimizes the sum of all numbers along its path.
+
+Note: You can only move either down or right at any point in time.
+
+*/
+
+
+public class Solution {
+    public int minPathSum(int[][] grid) {
+        
+        
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+        
+        return minPathSum(0,0,grid,map);
+        
+        
+    }
+    
+    
+    public int minPathSum(int row_start, int column_start, int[][] grid, HashMap<Integer, Integer> map)
+    {
+        int row = grid.length - 1;
+        int col = grid[0].length - 1;
+        int p = (col+1)*row_start + column_start;
+        
+        if(map.containsKey(p))
+        {
+            return map.get(p);
+        }
+        
+        if(row_start == row && column_start == col)
+        {
+            map.put(p, grid[row_start][column_start]);
+            return grid[row_start][column_start];
+        }
+        
+        int right_sum = Integer.MAX_VALUE;
+        int down_sum = Integer.MAX_VALUE;
+        int min_sum = 0;
+        
+        if(row_start<row)
+        {
+            right_sum = grid[row_start][column_start] + minPathSum(row_start+1, column_start, grid, map);
+        }
+        
+        if(column_start<col)
+        {
+            down_sum = grid[row_start][column_start] + minPathSum(row_start, column_start+1, grid, map);
+        }
+        
+       
+        if(right_sum < down_sum)
+        {
+            min_sum = right_sum;
+        }
+        else
+        {
+            min_sum = down_sum;
+        }
+        
+        map.put(p, min_sum);
+        return min_sum;
+        
+    }
+    
+}
