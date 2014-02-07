@@ -1,0 +1,104 @@
+/*
+The n-queens puzzle is the problem of placing n queens on an n×n chessboard such that no two queens attack each other.
+
+
+
+Given an integer n, return all distinct solutions to the n-queens puzzle.
+
+Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space respectively.
+
+For example,
+There exist two distinct solutions to the 4-queens puzzle:
+
+[
+ [".Q..",  // Solution 1
+  "...Q",
+  "Q...",
+  "..Q."],
+
+ ["..Q.",  // Solution 2
+  "Q...",
+  "...Q",
+  ".Q.."]
+]
+*/
+
+
+public class Solution {
+    public ArrayList<String[]> solveNQueens(int n) {
+     
+        ArrayList<String[]> result = new ArrayList<String[]>();
+        int[] one_case = new int[n+1];
+        solveNQueen(n, result, 1, one_case);
+        return result;
+        
+    }
+    
+    public void solveNQueen(int n, ArrayList<String[]> result, int position, int[] one_case)
+    {
+        if(position>n)
+        {
+            result.add(printResult(one_case));
+            return;
+        }
+        
+        for(int i=1; i<=n; i++)
+        {
+            one_case[position] = i;
+            if(checkCol(one_case,position) && checkDiag(one_case,position))
+            {
+                solveNQueen(n, result, position+1, one_case);
+            }
+            
+        }
+        
+        
+    }
+    
+    public boolean checkCol(int[] one_case, int pos)
+    {
+        for(int i=1; i<pos; i++)
+        {
+            if(one_case[i] == one_case[pos])
+            return false;
+        }
+        return true;
+    }
+    
+    public boolean checkDiag(int[] one_case, int pos)
+    {
+        for(int i=1; i<pos; i++)
+        {
+            if(Math.abs(one_case[pos] - one_case[i] ) == Math.abs(pos-i) )
+            return false;
+        }
+        return true;
+    }
+    
+    public String[] printResult(int[] one_case)
+    {
+        int len = one_case.length;
+        
+        String[] solution = new String[len-1];
+        
+        for(int i = 1; i<=len-1; i++)
+        {
+            String s = new String();
+            for(int j=1;j<=len-1;j++)
+            {
+                if(j == one_case[i])
+                {
+                    s += "Q";
+                }
+                else
+                {
+                    s += ".";
+                }
+            }
+            
+            solution[i-1] = s;
+            
+        }
+        return solution;
+    }
+}
