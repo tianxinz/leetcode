@@ -1,0 +1,66 @@
+/*
+A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
+
+The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
+
+How many possible unique paths are there?
+
+*/
+
+
+public class Solution {
+    public int uniquePaths(int m, int n) {
+        
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        
+        if(m<n)
+            return pow_p(m+n-2, n-1, map);
+        else
+            return pow_p(m+n-2, m-1, map);
+    }
+    
+    
+    public int pow_p(int m, int n, HashMap<String, Integer> map)
+    {
+        
+        String s = m + ":" + n;
+        
+        if(map.containsKey(s))
+        return map.get(s);
+        
+        if(m == n)
+        {
+            map.put(s,1);
+            return 1;
+        }
+        
+        if(n == 0)
+        {
+            map.put(s,1);
+            return 1;
+        }
+        
+        int res = pow_p(m-1, n-1,map) + pow_p(m-1,n,map);
+        map.put(s,res);
+        return res;
+        
+    }
+    
+    /*public int pow_p(int m, int n)
+    {
+        double res=1;     
+        
+        for(int i = m; i>m-n; i--)
+        {
+            res *= i;
+        }
+         
+        
+        for(int i = n; i>=1; i--)
+        {
+            res /= i;
+        }
+        return (int)res;
+    }
+    */
+}
